@@ -32,10 +32,13 @@ kubectl apply -f manifests/
 
 ### 4. Access the application
 ```bash
-minikube tunnel &  # Run in separate terminal
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
-export GATEWAY_URL=$(minikube ip):$INGRESS_PORT
-echo "Access the Bookinfo app at: http://$GATEWAY_URL/productpage"
+# Prometheus
+kubectl port-forward svc/prometheus -n istio-system 9090:9090
+# http://localhost:9090
+
+# Grafana
+kubectl port-forward svc/grafana -n istio-system 3000:3000
+# http://localhost:3000 (admin/admin)
 ```
 
 ## 📊 Monitoring Tools
